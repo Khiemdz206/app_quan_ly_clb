@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
               pageBuilder: (context, animation, secondaryAnimation) => const Homescreen(),
               transitionDuration: const Duration(milliseconds: 400),
               transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                return FadeTransition(opacity: animation, child: child,);
+              return FadeTransition(opacity: animation, child: child,);
               },
             )
             );
@@ -148,7 +148,6 @@ class _HomePageState extends State<HomePage> {
               Expanded(
                 child: _buildMenuButton('assets/image/teamwork.png', 'Teammates', 'Find Teammates to join \nthe competition', () =>()) 
               ),
-
             ],
           ),
           const SizedBox(height: 15),
@@ -209,8 +208,6 @@ class _HomePageState extends State<HomePage> {
           ),
           
           const SizedBox(height: 5), 
-          
-
           Text(
             subtitle,
             textAlign: TextAlign.center,

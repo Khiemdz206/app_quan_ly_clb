@@ -11,24 +11,56 @@ class Homescreen extends StatefulWidget {
 class  _HomescreenState extends State <Homescreen> {
   int _selectedIndex = 0;
 
+  int _preIndex = 0;
+
+  late PageController _pageController;
+
   final List<Widget> _pages = [
     const HomePage(),
     const Center(child: Text('Đây là trang Memories', style: TextStyle(fontSize: 24))),
     const Center(child: Text('Đây là trang Profile', style: TextStyle(fontSize: 24))),
-  ];
+  ];  
+  @override
+  void initState(){
+    super.initState();
+    _pageController = PageController(initialPage: _selectedIndex);
+  }
+  @override
+  void dispose(){
+    _pageController.dispose();
+    super.dispose();
+  }
 
-  
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index; 
+      _preIndex = index;
+      
     });
+    _pageController.animateToPage(
+      index, 
+      duration: const Duration(milliseconds: 300), 
+      curve: Curves.easeOutQuad
+    );
   }
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index){
+          if(index == _preIndex){
+            setState(() {
+              _selectedIndex = index;
+            });
+          }
+        },
+        physics: const BouncingScrollPhysics(),
 
-      body: _pages[_selectedIndex],
+        children: _pages,
+      ),
 
       bottomNavigationBar: Container(
         margin: const EdgeInsets.only(left: 20,right: 20,bottom: 30),
@@ -51,6 +83,7 @@ class  _HomescreenState extends State <Homescreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                GestureDetector(
+                
                 onTap: () => _onItemTapped(0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
