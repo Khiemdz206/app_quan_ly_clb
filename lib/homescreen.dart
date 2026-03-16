@@ -10,8 +10,7 @@ class Homescreen extends StatefulWidget {
 
 class  _HomescreenState extends State <Homescreen> {
   int _selectedIndex = 0;
-
-  int _preIndex = 0;
+  bool _isAnimating = false;
 
   late PageController _pageController;
 
@@ -31,16 +30,17 @@ class  _HomescreenState extends State <Homescreen> {
     super.dispose();
   }
 
-  void _onItemTapped(int index) {
+  void _onItemTapped(int index) async {
     setState(() {
-      _preIndex = index;
-      
+      _selectedIndex = index; 
+      _isAnimating = true;    
     });
-    _pageController.animateToPage(
+    await _pageController.animateToPage(
       index, 
       duration: const Duration(milliseconds: 300), 
       curve: Curves.easeOutQuad
     );
+    _isAnimating = false; 
   }
 
   
@@ -51,7 +51,7 @@ class  _HomescreenState extends State <Homescreen> {
       body: PageView(
         controller: _pageController,
         onPageChanged: (index){
-          if(index == _preIndex){
+          if (!_isAnimating) {
             setState(() {
               _selectedIndex = index;
             });
@@ -79,68 +79,34 @@ class  _HomescreenState extends State <Homescreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-               GestureDetector(
-                
-                onTap: () => _onItemTapped(0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset('assets/image/home.png', width: 24, height: 24),
-                    const SizedBox(height: 4,),
-                    Text(
-                     'Home',
-                     style: TextStyle(
-                      color: _selectedIndex == 0? Colors.blue: Colors.grey,
-                      fontSize: 12,
-                      fontWeight: _selectedIndex == 0 ? FontWeight.bold : FontWeight.normal
-                     ), 
-                    )
-                  ],
-                ),
-               )
-              ],
-            ),
-            GestureDetector(
-              onTap: () => _onItemTapped(1),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset('assets/image/photo.png', width: 24, height: 24),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Memories', 
-                    style: TextStyle(
-                      color: _selectedIndex == 1 ? Colors.blue : Colors.grey, 
-                      fontSize: 12,
-                      fontWeight: _selectedIndex == 1 ? FontWeight.bold : FontWeight.normal
-                    )
-                  ),
-                ],
-              ),
-            ),
-            GestureDetector(
-              onTap: () => _onItemTapped(2),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset('assets/image/user.png', width: 24, height: 24),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Profile', 
-                    style: TextStyle(
-                      color: _selectedIndex == 2 ? Colors.blue : Colors.grey, 
-                      fontSize: 12,
-                      fontWeight: _selectedIndex == 2 ? FontWeight.bold : FontWeight.normal
-                    )
-                  ),
-                ],
-              ),
-            ),
+            _buildNavItem(0, 'assets/image/home.png', 'Home'),
+            _buildNavItem(1, 'assets/image/photo.png', 'Memories'),
+            _buildNavItem(2, 'assets/image/user.png', 'Profile'),
           ]
         ),
+      ),
+    );
+  }
+
+  Widget _buildNavItem(int index, String assetPath, String label) {
+    return GestureDetector(
+      onTap: () => _onItemTapped(index),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(assetPath, width: 24, height: 24),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              color: _selectedIndex == index ? Colors.blue : Colors.grey,
+              fontSize: 12,
+              fontWeight: _selectedIndex == index
+                  ? FontWeight.bold
+                  : FontWeight.normal,
+            ),
+          ),
+        ],
       ),
     );
   }
