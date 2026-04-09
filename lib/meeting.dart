@@ -298,13 +298,16 @@ class __MettingPagStateState extends State<MettingPagState> {
                     context: context,
                     isScrollControlled: true,
                     backgroundColor: Colors.transparent,
-                    builder: (context) => MeetingInfoSheet(
-                      title: title,
-                      subtitle: subtitle,
-                      time: time,
-                      date: date,
-                      location: location,
-                      description: 'Mô tả chi tiết cho event: $title',
+                    builder: (context) => FractionallySizedBox(
+                      heightFactor: 0.85,
+                      child: MeetingInfoSheet(
+                        title: title,
+                        subtitle: subtitle,
+                        time: time,
+                        date: date,
+                        location: location,
+                        description: 'Mô tả chi tiết cho $title',
+                      ),
                     ),
                   );
                 },
