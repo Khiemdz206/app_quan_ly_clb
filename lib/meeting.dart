@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'meetinginfor.dart'; // import bottom sheet vào
+import 'meetinginfor.dart';
 
 class MettingPagState extends StatefulWidget {
   const MettingPagState({super.key});
@@ -112,7 +112,6 @@ class __MettingPagStateState extends State<MettingPagState> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 10),
-              // Tiêu đề Upcoming Events
               const Text(
                 'Upcoming Events',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
@@ -120,7 +119,7 @@ class __MettingPagStateState extends State<MettingPagState> {
               const SizedBox(height: 16),
 
               SizedBox(
-                height: 170, // Tăng chiều cao để không bị tràn chữ
+                height: 170,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: events.length,
